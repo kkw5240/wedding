@@ -45,7 +45,6 @@
 
 html {
   font-size: 16px;
-  scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
 }
 
@@ -57,7 +56,9 @@ body {
   line-height: 1.8;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  overflow: hidden;
+  height: 100vh;
+  height: 100dvh;
 }
 
 img {
@@ -105,7 +106,13 @@ a {
   margin: 0 auto;
   background-color: var(--bg-primary);
   position: relative;
-  overflow: hidden;
+  height: 100vh;
+  height: 100dvh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-snap-type: y mandatory;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
 }
 
 @media (min-width: 480px) {
@@ -129,23 +136,27 @@ a {
   background-color: var(--bg-secondary);
 }
 
-/* Full-page section feel */
+/* Full-page scroll-snap sections */
+#hero,
 #greeting,
 #calendar,
 #gallery,
 #location,
 #account,
-#contact {
+#contact,
+#share {
   min-height: 100dvh;
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
 
-/* Shorter sections */
-#share {
-  min-height: auto;
+/* Footer snaps too */
+.footer {
+  scroll-snap-align: start;
 }
 
 /* Ornament divider */
@@ -457,10 +468,21 @@ a {
 }
 
 /* --- 9. Gallery --- */
+#gallery .section-inner {
+  display: flex;
+  flex-direction: column;
+  max-height: 100dvh;
+  max-height: 100vh;
+  overflow: hidden;
+}
+
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 3px;
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .gallery-item {

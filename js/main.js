@@ -18,9 +18,18 @@ const CONFIG = {
     appKey: '', // 카카오 개발자 앱 JavaScript 키 입력
   },
   gallery: [
-    // 사진 추가 시 아래 형식으로 추가
+    // ── 샘플 이미지 (실제 사진으로 교체 예정) ──
+    { src: 'https://picsum.photos/seed/wed1/600/600', alt: '샘플 1' },
+    { src: 'https://picsum.photos/seed/wed2/600/600', alt: '샘플 2' },
+    { src: 'https://picsum.photos/seed/wed3/600/600', alt: '샘플 3' },
+    { src: 'https://picsum.photos/seed/wed4/600/600', alt: '샘플 4' },
+    { src: 'https://picsum.photos/seed/wed5/600/600', alt: '샘플 5' },
+    { src: 'https://picsum.photos/seed/wed6/600/600', alt: '샘플 6' },
+    { src: 'https://picsum.photos/seed/wed7/600/600', alt: '샘플 7' },
+    { src: 'https://picsum.photos/seed/wed8/600/600', alt: '샘플 8' },
+    { src: 'https://picsum.photos/seed/wed9/600/600', alt: '샘플 9' },
+    // ── 실제 사진은 아래처럼 로컬 경로로 교체 ──
     // { src: 'assets/images/photo-01.jpg', alt: '웨딩 사진 1' },
-    // { src: 'assets/images/photo-02.jpg', alt: '웨딩 사진 2' },
   ],
 };
 
@@ -93,7 +102,10 @@ function initNavDots() {
     dot.setAttribute('aria-label', sec.label);
     dot.title = sec.label;
     dot.addEventListener('click', () => {
-      document.getElementById(sec.id)?.scrollIntoView({ behavior: 'smooth' });
+      const target = document.getElementById(sec.id);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     });
     nav.appendChild(dot);
   });
