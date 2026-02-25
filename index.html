@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>규완 & 유안 결혼합니다</title>
+  <meta name="description" content="2026년 6월 20일 토요일 오전 11시, 합정 웨딩시그니처 2층 트리니티홀">
+  <meta property="og:title" content="김규완 ♥ 최유안 결혼합니다">
+  <meta property="og:description" content="2026년 6월 20일 토요일 오전 11시 | 합정 웨딩시그니처 2층 트리니티홀">
+  <meta property="og:image" content="https://kkw5240.github.io/wedding/assets/og-image.jpg">
+  <meta property="og:url" content="https://kkw5240.github.io/wedding/">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#A08B6E">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💌</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Noto+Sans+KR:wght@200;300;400;500&family=Noto+Serif+KR:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- BGM Player -->
+  <button id="bgm-toggle" class="bgm-toggle" aria-label="배경음악 토글">
+    <svg class="bgm-icon bgm-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M9 18V5l12-2v13"/>
+      <circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+    </svg>
+    <svg class="bgm-icon bgm-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M9 18V5l12-2v13"/>
+      <circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+      <line x1="1" y1="1" x2="23" y2="23" stroke-width="2"/>
+    </svg>
+  </button>
+  <audio id="bgm" loop preload="auto">
+    <source src="assets/bgm.mp3" type="audio/mpeg">
+  </audio>
+
+  <div id="invitation">
+
+    <!-- ========== HERO ========== -->
+    <section id="hero" class="section">
+      <div class="hero-bg"></div>
+      <div class="hero-content">
+        <p class="hero-label">W E D D I N G</p>
+        <div class="hero-divider-thin"></div>
+        <div class="hero-names">
+          <span class="hero-name-kr">규완</span>
+          <span class="hero-amp">&amp;</span>
+          <span class="hero-name-kr">유안</span>
+        </div>
+        <p class="hero-date-text">2026. 06. 20 SAT AM 11:00</p>
+        <p class="hero-venue-text">합정 웨딩시그니처</p>
+      </div>
+      <div class="scroll-indicator" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </div>
+    </section>
+
+    <!-- ========== GREETING ========== -->
+    <section id="greeting" class="section fade-in">
+      <div class="section-inner">
+        <h2 class="section-title-kr">초대합니다</h2>
+        <div class="ornament"><span>&#10022;</span></div>
+        <p class="greeting-text">
+          함께 있을 때 가장 나다울 수 있는<br>
+          사람을 만났습니다.<br><br>
+          서로의 오늘을 응원하고<br>
+          내일을 기대하며<br>
+          둘이 하나 되어<br>
+          깊고 단단한 마음으로 살아가겠습니다.<br><br>
+          저희 두 사람의 약속이 시작되는 이 자리에<br>
+          소중한 응원을 더해 주시면<br>
+          감사하겠습니다.
+        </p>
+        <div class="ornament"><span>&#10022;</span></div>
+        <div class="parents-info">
+          <p class="parent-row">
+            <span class="parent-names">김주영 · 김완식</span><span class="relation">의 아들</span> <strong>규완</strong>
+          </p>
+          <p class="parent-row">
+            <span class="parent-names">최승주 · 이은선</span><span class="relation">의 딸</span> <strong>유안</strong>
+          </p>
+        </div>
+        <p class="name-notice">※ 신부 '최수인'이 '최유안'으로 개명하였음을 안내드립니다.</p>
+      </div>
+    </section>
+
+    <!-- ========== CALENDAR ========== -->
+    <section id="calendar" class="section section-alt fade-in">
+      <div class="section-inner">
+        <h2 class="section-title-en">WEDDING DAY</h2>
+        <div class="event-details">
+          <p class="event-date">2026년 6월 20일 토요일</p>
+          <p class="event-time">오전 11시</p>
+          <p class="event-venue">합정 웨딩시그니처 2층 트리니티홀</p>
+        </div>
+        <div class="calendar-container" id="calendar-grid"></div>
+        <div class="dday" id="dday"></div>
+      </div>
+    </section>
+
+    <!-- ========== GALLERY ========== -->
+    <section id="gallery" class="section fade-in">
+      <div class="section-inner">
+        <h2 class="section-title-en">GALLERY</h2>
+        <div class="gallery-grid" id="gallery-grid">
+          <!-- JS에서 동적 생성 -->
+        </div>
+        <p class="gallery-placeholder" id="gallery-placeholder">
+          사진이 준비 중입니다.
+        </p>
+      </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox" role="dialog" aria-hidden="true">
+      <div class="lightbox-backdrop"></div>
+      <div class="lightbox-content">
+        <button class="lightbox-close" aria-label="닫기">&times;</button>
+        <button class="lightbox-prev" aria-label="이전 사진">&#8249;</button>
+        <img id="lightbox-img" src="" alt="갤러리 사진">
+        <button class="lightbox-next" aria-label="다음 사진">&#8250;</button>
+        <div class="lightbox-counter" id="lightbox-counter"></div>
+      </div>
+    </div>
+
+    <!-- ========== LOCATION ========== -->
+    <section id="location" class="section section-alt fade-in">
+      <div class="section-inner">
+        <h2 class="section-title-en">LOCATION</h2>
+        <h3 class="venue-name">합정 웨딩시그니처</h3>
+        <p class="venue-detail">2층 트리니티홀</p>
+        <p class="venue-address">서울특별시 마포구 양화로 87</p>
+        <p class="venue-tel">Tel. 02-335-5400</p>
+
+        <div id="map" class="map-container"></div>
+
+        <div class="map-buttons">
+          <a href="https://map.kakao.com/link/to/합정 웨딩시그니처,37.552578,126.917323" target="_blank" rel="noopener" class="map-btn">
+            <span class="map-btn-label">카카오맵</span>
+          </a>
+          <a href="https://map.naver.com/v5/search/서울 마포구 양화로 87" target="_blank" rel="noopener" class="map-btn">
+            <span class="map-btn-label">네이버지도</span>
+          </a>
+          <a href="https://apis.openapi.sk.com/tmap/app/routes?appKey=&name=합정웨딩시그니처&lon=126.917323&lat=37.552578" target="_blank" rel="noopener" class="map-btn">
+            <span class="map-btn-label">티맵</span>
+          </a>
+        </div>
+
+        <div class="transport-section">
+          <div class="transport-tabs" role="tablist">
+            <button class="transport-tab active" role="tab" data-tab="subway">지하철</button>
+            <button class="transport-tab" role="tab" data-tab="bus">버스</button>
+            <button class="transport-tab" role="tab" data-tab="car">자가용</button>
+          </div>
+          <div class="transport-panels">
+            <div class="transport-panel active" id="panel-subway">
+              <p><strong>2호선 · 6호선 합정역</strong></p>
+              <p>2번 출구에서 도보 약 3분</p>
+            </div>
+            <div class="transport-panel" id="panel-bus">
+              <p><strong>합정역 인근 정류장</strong></p>
+              <p>시내버스: 271, 733, 921</p>
+              <p>간선버스: 602, 603, 604, 760</p>
+              <p>지선버스: 5714, 7011, 7013A, 7013B</p>
+            </div>
+            <div class="transport-panel" id="panel-car">
+              <p><strong>네비게이션</strong></p>
+              <p>"합정 웨딩시그니처" 또는<br>"서울 마포구 양화로 87" 검색</p>
+              <br>
+              <p><strong>주차 안내</strong></p>
+              <p>양가 혼주 전용 주차 (5~6대)</p>
+              <p>일반 하객: 인근 H스퀘어 주차장,<br>서교주차장 이용 (약 520대 수용)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== ACCOUNT ========== -->
+    <section id="account" class="section fade-in">
+      <div class="section-inner">
+        <h2 class="section-title-kr">마음 전하실 곳</h2>
+        <div class="ornament"><span>&#10022;</span></div>
+        <p class="account-guide">축하의 마음을 전해주세요.</p>
+
+        <div class="account-group">
+          <button class="account-toggle" aria-expanded="false">
+            <span>신랑 측</span>
+            <svg class="toggle-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+          <div class="account-detail">
+            <div class="account-item">
+              <div class="account-meta">
+                <span class="account-role">혼주</span>
+                <span class="account-holder">김주영</span>
+              </div>
+              <div class="account-number">농협 207173-52-073581</div>
+              <button class="copy-btn" data-copy="20717352073581" data-label="농협 207173-52-073581 김주영">
+                복사
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="account-group">
+          <button class="account-toggle" aria-expanded="false">
+            <span>신부 측</span>
+            <svg class="toggle-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+          <div class="account-detail">
+            <div class="account-pending">추후 안내 예정입니다.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== CONTACT ========== -->
+    <section id="contact" class="section section-alt fade-in">
+      <div class="section-inner">
+        <h2 class="section-title-kr">연락하기</h2>
+        <div class="contact-grid">
+          <div class="contact-card">
+            <span class="contact-label">신랑</span>
+            <span class="contact-name">규완</span>
+            <div class="contact-actions">
+              <a href="tel:010-5028-5240" class="contact-btn" aria-label="신랑에게 전화">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+                </svg>
+                <span>전화</span>
+              </a>
+              <a href="sms:010-5028-5240" class="contact-btn" aria-label="신랑에게 문자">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+                </svg>
+                <span>문자</span>
+              </a>
+            </div>
+          </div>
+          <div class="contact-card">
+            <span class="contact-label">신부</span>
+            <span class="contact-name">유안</span>
+            <div class="contact-actions">
+              <a href="tel:010-9145-1051" class="contact-btn" aria-label="신부에게 전화">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+                </svg>
+                <span>전화</span>
+              </a>
+              <a href="sms:010-9145-1051" class="contact-btn" aria-label="신부에게 문자">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+                </svg>
+                <span>문자</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SHARE ========== -->
+    <section id="share" class="section fade-in">
+      <div class="section-inner">
+        <div class="share-buttons">
+          <button id="kakao-share" class="share-btn kakao">
+            <svg viewBox="0 0 24 24" fill="currentColor" class="kakao-icon">
+              <path d="M12 3C6.5 3 2 6.58 2 11c0 2.83 1.87 5.32 4.69 6.72l-1.2 4.47c-.1.37.35.67.67.45l5.34-3.54c.16.01.33.01.5.01 5.5 0 10-3.58 10-8s-4.5-8-10-8z"/>
+            </svg>
+            카카오톡 공유하기
+          </button>
+          <button id="link-copy" class="share-btn link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/>
+              <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/>
+            </svg>
+            링크 복사하기
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer">
+      <div class="footer-inner">
+        <p class="footer-names">Gyuwan & Yuan</p>
+        <p class="footer-date">2026. 06. 20</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast" aria-live="polite"></div>
+
+  <!-- Kakao SDK (카카오 앱 키 설정 후 주석 해제) -->
+  <!-- <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"></script> -->
+  <!-- Kakao Maps SDK (카카오 앱 키 설정 후 주석 해제) -->
+  <!-- <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=YOUR_KAKAO_APP_KEY"></script> -->
+
+  <script src="js/main.js"></script>
+</body>
+</html>
