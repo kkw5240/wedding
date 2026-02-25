@@ -29,6 +29,7 @@ const CONFIG = {
    =================== */
 document.addEventListener('DOMContentLoaded', () => {
   initScrollAnimations();
+  initNavDots();
   initCalendar();
   initDday();
   initGallery();
@@ -42,21 +43,88 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ===================
-   Scroll Fade-In
+   Scroll Fade-In (Staggered)
    =================== */
 function initScrollAnimations() {
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
+          // Set stagger delays on children before revealing
+          const children = entry.target.querySelectorAll('.section-inner > *');
+          children.forEach((child, i) => {
+            child.style.transitionDelay = `${i * 0.12}s`;
+          });
+          // Small RAF delay so transition-delay takes effect
+          requestAnimationFrame(() => {
+            entry.target.classList.add('visible');
+          });
         }
       });
     },
-    { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+    { threshold: 0.05, rootMargin: '0px 0px -60px 0px' }
   );
 
   document.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
+}
+
+/* ===================
+   Navigation Dots
+   =================== */
+function initNavDots() {
+  const nav = document.getElementById('nav-dots');
+  if (!nav) return;
+
+  const sections = [
+    { id: 'hero', label: '인트로' },
+    { id: 'greeting', label: '인사말' },
+    { id: 'calendar', label: '예식 안내' },
+    { id: 'gallery', label: '갤러리' },
+    { id: 'location', label: '오시는 길' },
+    { id: 'account', label: '축의금' },
+    { id: 'contact', label: '연락하기' },
+  ];
+
+  // Create dots
+  sections.forEach((sec) => {
+    const dot = document.createElement('button');
+    dot.className = 'nav-dot';
+    dot.dataset.target = sec.id;
+    dot.setAttribute('aria-label', sec.label);
+    dot.title = sec.label;
+    dot.addEventListener('click', () => {
+      document.getElementById(sec.id)?.scrollIntoView({ behavior: 'smooth' });
+    });
+    nav.appendChild(dot);
+  });
+
+  // Observe sections to update active dot
+  const dots = nav.querySelectorAll('.nav-dot');
+  let currentActive = 0;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const idx = sections.findIndex((s) => s.id === entry.target.id);
+          if (idx !== -1 && idx !== currentActive) {
+            dots[currentActive]?.classList.remove('active');
+            dots[idx]?.classList.add('active');
+            currentActive = idx;
+          }
+        }
+      });
+    },
+    { threshold: 0.3, rootMargin: '-10% 0px -10% 0px' }
+  );
+
+  sections.forEach((sec) => {
+    const el = document.getElementById(sec.id);
+    if (el) observer.observe(el);
+  });
+
+  // Set first dot active
+  if (dots[0]) dots[0].classList.add('active');
 }
 
 /* ===================
