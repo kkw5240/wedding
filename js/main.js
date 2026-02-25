@@ -17,6 +17,16 @@ const CONFIG = {
   kakao: {
     appKey: '', // 카카오 개발자 앱 JavaScript 키 입력
   },
+  firebase: {
+    // Firebase 프로젝트 설정 후 아래 값 입력
+    apiKey: '',
+    authDomain: '',
+    databaseURL: '',
+    projectId: '',
+    storageBucket: '',
+    messagingSenderId: '',
+    appId: '',
+  },
   gallery: [
     // ── 샘플 이미지 (실제 사진으로 교체 예정) ──
     { src: 'https://picsum.photos/seed/wed1/600/600', alt: '샘플 1' },
@@ -48,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initAccountToggle();
   initCopyButtons();
   initBGM();
+  initGuestbook();
   initShare();
 });
 
@@ -92,6 +103,7 @@ function initNavDots() {
     { id: 'location', label: '오시는 길' },
     { id: 'account', label: '축의금' },
     { id: 'contact', label: '연락하기' },
+    { id: 'guestbook', label: '방명록' },
   ];
 
   // Create dots
@@ -537,6 +549,179 @@ function shareURL() {
   }).catch(() => {
     showToast('링크 복사에 실패했습니다.');
   });
+}
+
+/* ===================
+   Guestbook (Firebase)
+   =================== */
+function initGuestbook() {
+  const form = document.getElementById('guestbook-form');
+  const list = document.getElementById('guestbook-list');
+  const emptyMsg = document.getElementById('guestbook-empty');
+  if (!form || !list) return;
+
+  // Firebase 초기화
+  if (typeof firebase === 'undefined' || !CONFIG.firebase.apiKey) {
+    // Firebase 미설정 시 로컬 모드
+    console.log('Firebase not configured. Guestbook in local mode.');
+    loadLocalGuestbook();
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('gb-name').value.trim();
+      const password = document.getElementById('gb-password').value.trim();
+      const message = document.getElementById('gb-message').value.trim();
+      if (!name || !password || !message) return;
+
+      const entry = {
+        name,
+        password: simpleHash(password),
+        message,
+        timestamp: Date.now(),
+      };
+
+      const entries = JSON.parse(localStorage.getItem('wedding-guestbook') || '[]');
+      entries.unshift(entry);
+      localStorage.setItem('wedding-guestbook', JSON.stringify(entries));
+      renderGuestbookLocal(entries);
+      form.reset();
+      showToast('메시지가 등록되었습니다.');
+    });
+    return;
+  }
+
+  // Firebase 앱 초기화
+  if (!firebase.apps.length) {
+    firebase.initializeApp(CONFIG.firebase);
+  }
+  const db = firebase.database();
+  const gbRef = db.ref('guestbook');
+
+  // 실시간 리스닝
+  gbRef.orderByChild('timestamp').on('value', (snapshot) => {
+    list.innerHTML = '';
+    const entries = [];
+    snapshot.forEach((child) => {
+      entries.push({ key: child.key, ...child.val() });
+    });
+    entries.reverse(); // 최신순
+
+    if (entries.length === 0) {
+      if (emptyMsg) emptyMsg.style.display = 'block';
+      return;
+    }
+    if (emptyMsg) emptyMsg.style.display = 'none';
+
+    entries.forEach((entry) => {
+      list.appendChild(createGuestbookItem(entry, (key, pw) => {
+        // 삭제
+        const inputPw = prompt('비밀번호를 입력하세요.');
+        if (inputPw && simpleHash(inputPw) === pw) {
+          db.ref('guestbook/' + key).remove();
+          showToast('삭제되었습니다.');
+        } else if (inputPw) {
+          showToast('비밀번호가 일치하지 않습니다.');
+        }
+      }));
+    });
+  });
+
+  // 폼 제출
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = document.getElementById('gb-name').value.trim();
+    const password = document.getElementById('gb-password').value.trim();
+    const message = document.getElementById('gb-message').value.trim();
+    if (!name || !password || !message) return;
+
+    gbRef.push({
+      name,
+      password: simpleHash(password),
+      message,
+      timestamp: Date.now(),
+    });
+    form.reset();
+    showToast('메시지가 등록되었습니다.');
+  });
+}
+
+/* 로컬 방명록 (Firebase 미설정 시) */
+function loadLocalGuestbook() {
+  const entries = JSON.parse(localStorage.getItem('wedding-guestbook') || '[]');
+  renderGuestbookLocal(entries);
+}
+
+function renderGuestbookLocal(entries) {
+  const list = document.getElementById('guestbook-list');
+  const emptyMsg = document.getElementById('guestbook-empty');
+  if (!list) return;
+  list.innerHTML = '';
+
+  if (entries.length === 0) {
+    if (emptyMsg) emptyMsg.style.display = 'block';
+    return;
+  }
+  if (emptyMsg) emptyMsg.style.display = 'none';
+
+  entries.forEach((entry, idx) => {
+    list.appendChild(createGuestbookItem(
+      { ...entry, key: idx },
+      (key) => {
+        const inputPw = prompt('비밀번호를 입력하세요.');
+        if (inputPw && simpleHash(inputPw) === entry.password) {
+          entries.splice(key, 1);
+          localStorage.setItem('wedding-guestbook', JSON.stringify(entries));
+          renderGuestbookLocal(entries);
+          showToast('삭제되었습니다.');
+        } else if (inputPw) {
+          showToast('비밀번호가 일치하지 않습니다.');
+        }
+      }
+    ));
+  });
+}
+
+/* 방명록 아이템 생성 */
+function createGuestbookItem(entry, onDelete) {
+  const item = document.createElement('div');
+  item.className = 'guestbook-item';
+
+  const date = new Date(entry.timestamp);
+  const dateStr = `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`;
+
+  item.innerHTML = `
+    <div class="guestbook-item-header">
+      <span class="guestbook-item-name">${escapeHtml(entry.name)}</span>
+      <div>
+        <span class="guestbook-item-date">${dateStr}</span>
+        <button class="guestbook-item-delete" aria-label="삭제">삭제</button>
+      </div>
+    </div>
+    <p class="guestbook-item-message">${escapeHtml(entry.message)}</p>
+  `;
+
+  item.querySelector('.guestbook-item-delete').addEventListener('click', () => {
+    onDelete(entry.key, entry.password);
+  });
+
+  return item;
+}
+
+/* 간단한 해시 (비밀번호 보호용, 보안용 아님) */
+function simpleHash(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash |= 0;
+  }
+  return String(hash);
+}
+
+/* HTML 이스케이프 */
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
 }
 
 /* ===================
