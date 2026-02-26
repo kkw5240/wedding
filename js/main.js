@@ -18,14 +18,13 @@ const CONFIG = {
     appKey: '', // 카카오 개발자 앱 JavaScript 키 입력
   },
   firebase: {
-    // Firebase 프로젝트 설정 후 아래 값 입력
-    apiKey: '',
-    authDomain: '',
-    databaseURL: '',
-    projectId: '',
-    storageBucket: '',
-    messagingSenderId: '',
-    appId: '',
+    apiKey: 'AIzaSyDb6oej8E1d50YVjpR6O4XWnVxb7evmTCg',
+    authDomain: 'wedding-invitation-7612d.firebaseapp.com',
+    databaseURL: 'https://wedding-invitation-7612d-default-rtdb.asia-southeast1.firebasedatabase.app',
+    projectId: 'wedding-invitation-7612d',
+    storageBucket: 'wedding-invitation-7612d.firebasestorage.app',
+    messagingSenderId: '277025376295',
+    appId: '1:277025376295:web:9f5a8268784725a1b2e602',
   },
   gallery: [
     // ── 샘플 이미지 (실제 사진으로 교체 예정) ──
