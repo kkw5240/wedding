@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
@@ -7,39 +8,50 @@
   <meta name="description" content="2026년 6월 20일 토요일 오전 11시, 합정 웨딩시그니처 2층 트리니티홀">
   <meta property="og:title" content="김규완 ♥ 최유안 결혼합니다">
   <meta property="og:description" content="2026년 6월 20일 토요일 오전 11시 | 합정 웨딩시그니처 2층 트리니티홀">
-  <meta property="og:image" content="https://kkw5240.github.io/wedding/assets/og-image.jpg">
+  <meta property="og:image" content="https://kkw5240.github.io/wedding/assets/images/og-image.jpg">
   <meta property="og:url" content="https://kkw5240.github.io/wedding/">
   <meta property="og:type" content="website">
   <meta name="theme-color" content="#A08B6E">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💌</text></svg>">
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💌</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Noto+Sans+KR:wght@200;300;400;500&family=Noto+Serif+KR:wght@200;300;400;500;600&family=Sacramento&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Noto+Sans+KR:wght@200;300;400;500&family=Noto+Serif+KR:wght@200;300;400;500;600&family=Sacramento&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
   <!-- BGM Player -->
   <button id="bgm-toggle" class="bgm-toggle" aria-label="배경음악 토글">
     <svg class="bgm-icon bgm-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-      <path d="M9 18V5l12-2v13"/>
-      <circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+      <path d="M9 18V5l12-2v13" />
+      <circle cx="6" cy="18" r="3" />
+      <circle cx="18" cy="16" r="3" />
     </svg>
     <svg class="bgm-icon bgm-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-      <path d="M9 18V5l12-2v13"/>
-      <circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
-      <line x1="1" y1="1" x2="23" y2="23" stroke-width="2"/>
+      <path d="M9 18V5l12-2v13" />
+      <circle cx="6" cy="18" r="3" />
+      <circle cx="18" cy="16" r="3" />
+      <line x1="1" y1="1" x2="23" y2="23" stroke-width="2" />
     </svg>
   </button>
   <audio id="bgm" loop preload="auto">
     <source src="assets/bgm.mp3" type="audio/mpeg">
   </audio>
+  <p class="bgm-hint" id="bgm-hint" aria-hidden="true">♪ Sweet Dreams, My Dear</p>
 
   <div id="invitation">
 
     <!-- ========== HERO ========== -->
     <section id="hero" class="section">
-      <div class="hero-bg"></div>
+      <div class="hero-photo-frame">
+        <!-- <img class="hero-photo" src="assets/images/hero.jpg" alt="규완 ♥ 유안" loading="eager"> -->
+        <img class="hero-photo" src="assets/images/full-20.jpg" alt="규완 ♥ 유안" loading="eager">
+        <div class="hero-photo-vignette"></div>
+      </div>
       <div class="hero-content">
         <p class="hero-label">.wedding invitation.</p>
         <div class="hero-divider-thin"></div>
@@ -55,7 +67,7 @@
       </div>
       <div class="scroll-indicator" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <polyline points="6 9 12 15 18 9"/>
+          <polyline points="6 9 12 15 18 9" />
         </svg>
       </div>
     </section>
@@ -63,6 +75,9 @@
     <!-- ========== GREETING ========== -->
     <section id="greeting" class="section fade-in">
       <div class="section-inner">
+        <div class="greeting-photo">
+          <img src="assets/images/full-17.jpg" alt="규완과 유안" loading="lazy">
+        </div>
         <h2 class="section-title-kr">초대합니다</h2>
         <div class="ornament"><span>&#10022;</span></div>
         <p class="greeting-text">
@@ -106,13 +121,25 @@
     <!-- ========== GALLERY ========== -->
     <section id="gallery" class="section fade-in">
       <div class="section-inner">
+        <p class="section-eyebrow">our memories</p>
         <h2 class="section-title-en">GALLERY</h2>
         <div class="gallery-grid" id="gallery-grid">
           <!-- JS에서 동적 생성 -->
         </div>
-        <p class="gallery-placeholder" id="gallery-placeholder">
-          사진이 준비 중입니다.
-        </p>
+        <p class="gallery-hint">사진을 누르면 크게 볼 수 있어요.</p>
+      </div>
+    </section>
+
+    <!-- ========== ALBUM ========== -->
+    <section id="album" class="section section-alt fade-in">
+      <div class="section-inner album-inner">
+        <p class="section-eyebrow">photo album</p>
+        <h2 class="section-title-en">ALBUM</h2>
+        <p class="album-guide">좌우로 넘겨보세요</p>
+        <div class="album-strip" id="album-strip">
+          <!-- JS에서 동적 생성 -->
+        </div>
+        <div class="album-progress" id="album-progress" aria-hidden="true"></div>
       </div>
     </section>
 
@@ -140,7 +167,8 @@
         <div id="map" class="map-container"></div>
 
         <div class="map-buttons">
-          <a href="https://map.kakao.com/link/to/합정 웨딩시그니처,37.552578,126.917323" target="_blank" rel="noopener" class="map-btn">
+          <a href="https://map.kakao.com/link/to/합정 웨딩시그니처,37.552578,126.917323" target="_blank" rel="noopener"
+            class="map-btn">
             <span class="map-btn-label">카카오맵</span>
           </a>
           <a href="https://map.naver.com/v5/search/서울 마포구 양화로 87" target="_blank" rel="noopener" class="map-btn">
@@ -192,7 +220,7 @@
           <button class="account-toggle" aria-expanded="false">
             <span>신랑 측</span>
             <svg class="toggle-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <polyline points="6 9 12 15 18 9"/>
+              <polyline points="6 9 12 15 18 9" />
             </svg>
           </button>
           <div class="account-detail">
@@ -213,7 +241,7 @@
           <button class="account-toggle" aria-expanded="false">
             <span>신부 측</span>
             <svg class="toggle-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <polyline points="6 9 12 15 18 9"/>
+              <polyline points="6 9 12 15 18 9" />
             </svg>
           </button>
           <div class="account-detail">
@@ -234,13 +262,14 @@
             <div class="contact-actions">
               <a href="tel:010-5028-5240" class="contact-btn" aria-label="신랑에게 전화">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                  <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+                  <path
+                    d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
                 </svg>
                 <span>전화</span>
               </a>
               <a href="sms:010-5028-5240" class="contact-btn" aria-label="신랑에게 문자">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                  <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+                  <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
                 </svg>
                 <span>문자</span>
               </a>
@@ -252,13 +281,14 @@
             <div class="contact-actions">
               <a href="tel:010-9145-1051" class="contact-btn" aria-label="신부에게 전화">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                  <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+                  <path
+                    d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
                 </svg>
                 <span>전화</span>
               </a>
               <a href="sms:010-9145-1051" class="contact-btn" aria-label="신부에게 문자">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                  <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+                  <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
                 </svg>
                 <span>문자</span>
               </a>
@@ -296,14 +326,15 @@
         <div class="share-buttons">
           <button id="kakao-share" class="share-btn kakao">
             <svg viewBox="0 0 24 24" fill="currentColor" class="kakao-icon">
-              <path d="M12 3C6.5 3 2 6.58 2 11c0 2.83 1.87 5.32 4.69 6.72l-1.2 4.47c-.1.37.35.67.67.45l5.34-3.54c.16.01.33.01.5.01 5.5 0 10-3.58 10-8s-4.5-8-10-8z"/>
+              <path
+                d="M12 3C6.5 3 2 6.58 2 11c0 2.83 1.87 5.32 4.69 6.72l-1.2 4.47c-.1.37.35.67.67.45l5.34-3.54c.16.01.33.01.5.01 5.5 0 10-3.58 10-8s-4.5-8-10-8z" />
             </svg>
             카카오톡 공유하기
           </button>
           <button id="link-copy" class="share-btn link">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/>
-              <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/>
+              <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" />
+              <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" />
             </svg>
             링크 복사하기
           </button>
@@ -314,7 +345,7 @@
     <!-- ========== FOOTER ========== -->
     <footer class="footer">
       <div class="footer-inner">
-        <p class="footer-names">Gyuwan & Yuan</p>
+        <p class="footer-names">Kyuwan & Yuan</p>
         <p class="footer-date">2026. 06. 20</p>
       </div>
     </footer>
@@ -338,4 +369,5 @@
 
   <script src="js/main.js"></script>
 </body>
+
 </html>

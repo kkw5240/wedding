@@ -190,48 +190,77 @@ a {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
   overflow: hidden;
+  background: linear-gradient(180deg, #FFFDF9 0%, #F5EFE5 100%);
+  padding-bottom: 56px;
 }
 
-.hero-bg {
+/* Hero photo — framed, elevated, soft shadow */
+.hero-photo-frame {
   position: absolute;
-  inset: 0;
-  background: var(--bg-primary);
+  top: 56px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 56px);
+  max-width: 360px;
+  aspect-ratio: 3 / 4;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow:
+    0 30px 60px -20px rgba(58, 53, 48, 0.35),
+    0 14px 28px -10px rgba(58, 53, 48, 0.18),
+    0 0 0 1px rgba(201, 169, 110, 0.12);
   z-index: 0;
+  animation: heroPhotoIn 1.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
-/* hero photo override — 사진 추가 시 이 클래스 활성화 */
-.hero-bg.has-photo {
-  background-size: cover;
-  background-position: center;
+.hero-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+  display: block;
 }
 
-.hero-bg.has-photo::after {
-  content: '';
+.hero-photo-vignette {
   position: absolute;
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(0,0,0,0.05) 0%,
-    rgba(0,0,0,0.15) 50%,
-    rgba(0,0,0,0.35) 100%
+    rgba(58, 53, 48, 0) 0%,
+    rgba(58, 53, 48, 0) 50%,
+    rgba(58, 53, 48, 0.55) 100%
   );
+  pointer-events: none;
+}
+
+@keyframes heroPhotoIn {
+  0% { opacity: 0; transform: translateX(-50%) scale(1.02); }
+  100% { opacity: 1; transform: translateX(-50%) scale(1); }
 }
 
 .hero-content {
   position: relative;
-  z-index: 1;
-  padding: 0 var(--section-px);
+  z-index: 2;
+  padding: 24px var(--section-px) 8px;
+  width: 100%;
+  text-align: center;
+  background: linear-gradient(180deg,
+    rgba(255, 253, 249, 0) 0%,
+    rgba(255, 253, 249, 0.92) 18%,
+    rgba(255, 253, 249, 1) 38%);
+  margin-top: -100px;
+  padding-top: 110px;
 }
 
 .hero-label {
   font-family: var(--font-en-script);
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   font-weight: 400;
   letter-spacing: 0.05em;
-  color: var(--accent);
-  margin-bottom: 20px;
+  color: var(--accent-dark);
+  margin-bottom: 16px;
 }
 
 .hero-divider-thin {
@@ -311,7 +340,45 @@ a {
   50% { transform: translateX(-50%) translateY(8px); opacity: 1; }
 }
 
+/* --- 6c. Section eyebrow (script accent above titles) --- */
+.section-eyebrow {
+  font-family: var(--font-en-script);
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+  margin-bottom: 6px;
+}
+
 /* --- 7. Greeting --- */
+.greeting-photo {
+  width: 220px;
+  height: 280px;
+  margin: 0 auto 32px;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow:
+    0 20px 40px -16px rgba(58, 53, 48, 0.3),
+    0 8px 18px -8px rgba(58, 53, 48, 0.18);
+  position: relative;
+}
+
+.greeting-photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(255, 253, 249, 0.65);
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+.greeting-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 35%;
+}
+
 .greeting-text {
   font-family: var(--font-kr-serif);
   font-size: 0.92rem;
@@ -482,15 +549,30 @@ a {
   max-height: 100dvh;
   max-height: 100vh;
   overflow: hidden;
+  padding-top: 56px;
+  padding-bottom: 56px;
 }
 
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 3px;
+  gap: 4px;
   flex: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  border-radius: 4px;
+  padding: 2px;
+  background: var(--border-light);
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-light) transparent;
+}
+
+.gallery-grid::-webkit-scrollbar {
+  width: 4px;
+}
+.gallery-grid::-webkit-scrollbar-thumb {
+  background: var(--accent-light);
+  border-radius: 2px;
 }
 
 .gallery-item {
@@ -498,24 +580,142 @@ a {
   overflow: hidden;
   cursor: pointer;
   position: relative;
+  border: none;
+  padding: 0;
+  background: var(--bg-secondary);
+  border-radius: 2px;
+}
+
+.gallery-item::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(201, 169, 110, 0);
+  transition: border-color var(--transition);
+  pointer-events: none;
 }
 
 .gallery-item img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s ease;
+  transition: transform 0.5s ease;
 }
 
 .gallery-item:hover img,
 .gallery-item:active img {
-  transform: scale(1.05);
+  transform: scale(1.06);
+}
+
+.gallery-item:hover::after {
+  border-color: rgba(201, 169, 110, 0.4);
+}
+
+.gallery-hint {
+  margin-top: 14px;
+  font-size: 0.72rem;
+  color: var(--text-light);
+  letter-spacing: 0.05em;
 }
 
 .gallery-placeholder {
   font-size: 0.85rem;
   color: var(--text-light);
   padding: 40px 0;
+}
+
+/* --- 9b. Album (horizontal carousel) --- */
+.album-inner {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.album-inner > .section-eyebrow,
+.album-inner > .section-title-en,
+.album-inner > .album-guide,
+.album-inner > .album-progress {
+  padding-left: var(--section-px);
+  padding-right: var(--section-px);
+}
+
+.album-guide {
+  font-size: 0.78rem;
+  color: var(--text-light);
+  margin-bottom: 24px;
+  letter-spacing: 0.05em;
+}
+
+.album-strip {
+  width: 100%;
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 8px var(--section-px) 24px;
+}
+
+.album-strip::-webkit-scrollbar { display: none; }
+
+.album-slide {
+  flex: 0 0 calc(100% - 56px);
+  max-width: 360px;
+  aspect-ratio: 3 / 2;
+  scroll-snap-align: center;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow:
+    0 18px 36px -16px rgba(58, 53, 48, 0.32),
+    0 6px 14px -6px rgba(58, 53, 48, 0.16);
+  background: var(--bg-secondary);
+  cursor: pointer;
+  position: relative;
+}
+
+/* First spread (album cover) is square-ish */
+.album-slide:first-child,
+.album-slide:last-child {
+  aspect-ratio: 3 / 4;
+  flex: 0 0 calc(70% );
+  max-width: 280px;
+}
+
+.album-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.album-slide:hover img,
+.album-slide:active img {
+  transform: scale(1.03);
+}
+
+.album-progress {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.album-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: all var(--transition);
+}
+
+.album-dot.active {
+  background: var(--accent);
+  width: 18px;
+  border-radius: 3px;
 }
 
 /* --- 10. Lightbox --- */
@@ -1164,6 +1364,33 @@ a {
   animation: musicPulse 2s ease-in-out infinite;
 }
 
+/* BGM song-title hint */
+.bgm-hint {
+  position: fixed;
+  top: 22px;
+  right: 64px;
+  z-index: 99;
+  padding: 6px 14px;
+  font-family: var(--font-en-script);
+  font-size: 0.95rem;
+  color: var(--accent-dark);
+  background: rgba(255, 253, 249, 0.9);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 16px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(8px);
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.bgm-hint.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+
 /* --- 17. Animations --- */
 
 /* Section-level fade (container) */
@@ -1344,6 +1571,17 @@ a {
 
   .hero-name-kr {
     font-size: 1.8rem;
+  }
+
+  .hero-photo-frame {
+    top: 32px;
+    max-width: 290px;
+  }
+
+  .greeting-photo {
+    width: 180px;
+    height: 230px;
+    margin-bottom: 24px;
   }
 
   :root {

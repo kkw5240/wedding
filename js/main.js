@@ -26,20 +26,24 @@ const CONFIG = {
     messagingSenderId: '277025376295',
     appId: '1:277025376295:web:9f5a8268784725a1b2e602',
   },
-  gallery: [
-    // ── 샘플 이미지 (실제 사진으로 교체 예정) ──
-    { src: 'https://picsum.photos/seed/wed1/600/600', alt: '샘플 1' },
-    { src: 'https://picsum.photos/seed/wed2/600/600', alt: '샘플 2' },
-    { src: 'https://picsum.photos/seed/wed3/600/600', alt: '샘플 3' },
-    { src: 'https://picsum.photos/seed/wed4/600/600', alt: '샘플 4' },
-    { src: 'https://picsum.photos/seed/wed5/600/600', alt: '샘플 5' },
-    { src: 'https://picsum.photos/seed/wed6/600/600', alt: '샘플 6' },
-    { src: 'https://picsum.photos/seed/wed7/600/600', alt: '샘플 7' },
-    { src: 'https://picsum.photos/seed/wed8/600/600', alt: '샘플 8' },
-    { src: 'https://picsum.photos/seed/wed9/600/600', alt: '샘플 9' },
-    // ── 실제 사진은 아래처럼 로컬 경로로 교체 ──
-    // { src: 'assets/images/photo-01.jpg', alt: '웨딩 사진 1' },
-  ],
+  // Singles 1~20 (낱장 수정본). thumb=그리드, full=라이트박스
+  gallery: Array.from({ length: 20 }, (_, i) => {
+    const n = String(i + 1).padStart(2, '0');
+    return {
+      thumb: `assets/images/thumb-${n}.jpg`,
+      src: `assets/images/full-${n}.jpg`,
+      alt: `규완 ♥ 유안 #${i + 1}`,
+    };
+  }),
+  // Album spreads (앨범 양면 인쇄본)
+  album: [
+    'album-001', 'album-002-003', 'album-004-005', 'album-006-007',
+    'album-008-009', 'album-010-011', 'album-012-013', 'album-014-015',
+    'album-016-017', 'album-018-019', 'album-020',
+  ].map((name, i) => ({
+    src: `assets/images/${name}.jpg`,
+    alt: `앨범 ${i + 1}`,
+  })),
 };
 
 /* ===================
@@ -51,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCalendar();
   initDday();
   initGallery();
+  initAlbum();
   initLightbox();
   initMap();
   initTransportTabs();
@@ -99,6 +104,7 @@ function initNavDots() {
     { id: 'greeting', label: '인사말' },
     { id: 'calendar', label: '예식 안내' },
     { id: 'gallery', label: '갤러리' },
+    { id: 'album', label: '앨범' },
     { id: 'location', label: '오시는 길' },
     { id: 'account', label: '축의금' },
     { id: 'contact', label: '연락하기' },
@@ -250,30 +256,75 @@ function initDday() {
    =================== */
 function initGallery() {
   const grid = document.getElementById('gallery-grid');
-  const placeholder = document.getElementById('gallery-placeholder');
   if (!grid) return;
-
-  if (CONFIG.gallery.length === 0) {
-    grid.style.display = 'none';
-    if (placeholder) placeholder.style.display = 'block';
-    return;
-  }
-
-  if (placeholder) placeholder.style.display = 'none';
-  grid.style.display = 'grid';
+  if (CONFIG.gallery.length === 0) { grid.style.display = 'none'; return; }
 
   CONFIG.gallery.forEach((photo, index) => {
-    const item = document.createElement('div');
+    const item = document.createElement('button');
+    item.type = 'button';
     item.className = 'gallery-item';
     item.dataset.index = index;
+    item.setAttribute('aria-label', photo.alt);
 
     const img = document.createElement('img');
-    img.src = photo.src;
+    img.src = photo.thumb || photo.src;
     img.alt = photo.alt || `사진 ${index + 1}`;
     img.loading = 'lazy';
+    img.decoding = 'async';
 
     item.appendChild(img);
     grid.appendChild(item);
+  });
+}
+
+/* ===================
+   Album (가로 스와이프 캐러셀)
+   =================== */
+function initAlbum() {
+  const strip = document.getElementById('album-strip');
+  const progress = document.getElementById('album-progress');
+  if (!strip || !CONFIG.album?.length) return;
+
+  CONFIG.album.forEach((photo, index) => {
+    const slide = document.createElement('div');
+    slide.className = 'album-slide';
+    slide.dataset.index = index;
+    const img = document.createElement('img');
+    img.src = photo.src;
+    img.alt = photo.alt;
+    img.loading = 'lazy';
+    img.decoding = 'async';
+    slide.appendChild(img);
+    strip.appendChild(slide);
+  });
+
+  // Progress dots
+  if (progress) {
+    CONFIG.album.forEach((_, i) => {
+      const dot = document.createElement('span');
+      dot.className = 'album-dot' + (i === 0 ? ' active' : '');
+      progress.appendChild(dot);
+    });
+
+    const dots = progress.querySelectorAll('.album-dot');
+    let lastActive = 0;
+    strip.addEventListener('scroll', () => {
+      const slideWidth = strip.querySelector('.album-slide')?.offsetWidth || 1;
+      const idx = Math.round(strip.scrollLeft / slideWidth);
+      if (idx !== lastActive && dots[idx]) {
+        dots[lastActive]?.classList.remove('active');
+        dots[idx].classList.add('active');
+        lastActive = idx;
+      }
+    }, { passive: true });
+  }
+
+  // Open lightbox in album mode on tap
+  strip.addEventListener('click', (e) => {
+    const slide = e.target.closest('.album-slide');
+    if (slide && window.__openAlbumLightbox) {
+      window.__openAlbumLightbox(parseInt(slide.dataset.index, 10));
+    }
   });
 }
 
@@ -289,13 +340,15 @@ function initLightbox() {
   const nextBtn = lightbox?.querySelector('.lightbox-next');
   const backdrop = lightbox?.querySelector('.lightbox-backdrop');
 
-  if (!lightbox || CONFIG.gallery.length === 0) return;
+  if (!lightbox) return;
 
   let currentIndex = 0;
+  let currentSet = CONFIG.gallery;
   let touchStartX = 0;
   let touchEndX = 0;
 
-  function open(index) {
+  function open(index, set) {
+    currentSet = set || CONFIG.gallery;
     currentIndex = index;
     show();
     lightbox.classList.add('active');
@@ -310,20 +363,24 @@ function initLightbox() {
   }
 
   function show() {
-    lightboxImg.src = CONFIG.gallery[currentIndex].src;
-    lightboxImg.alt = CONFIG.gallery[currentIndex].alt || '';
-    lightboxCounter.textContent = `${currentIndex + 1} / ${CONFIG.gallery.length}`;
+    if (!currentSet[currentIndex]) return;
+    lightboxImg.src = currentSet[currentIndex].src;
+    lightboxImg.alt = currentSet[currentIndex].alt || '';
+    lightboxCounter.textContent = `${currentIndex + 1} / ${currentSet.length}`;
   }
 
   function prev() {
-    currentIndex = (currentIndex - 1 + CONFIG.gallery.length) % CONFIG.gallery.length;
+    currentIndex = (currentIndex - 1 + currentSet.length) % currentSet.length;
     show();
   }
 
   function next() {
-    currentIndex = (currentIndex + 1) % CONFIG.gallery.length;
+    currentIndex = (currentIndex + 1) % currentSet.length;
     show();
   }
+
+  // Expose album opener
+  window.__openAlbumLightbox = (idx) => open(idx, CONFIG.album);
 
   // Click on gallery items
   document.getElementById('gallery-grid')?.addEventListener('click', (e) => {
@@ -475,23 +532,64 @@ function initCopyButtons() {
 function initBGM() {
   const toggle = document.getElementById('bgm-toggle');
   const audio = document.getElementById('bgm');
+  const hint = document.getElementById('bgm-hint');
   if (!toggle || !audio) return;
 
+  const TARGET_VOLUME = 0.45;
+  const FADE_MS = 2400;
+  audio.volume = 0;
   let isPlaying = false;
+  let userInteracted = false;
+  let fadeTimer = null;
+
+  function fadeTo(target, durationMs) {
+    if (fadeTimer) clearInterval(fadeTimer);
+    const start = audio.volume;
+    const t0 = performance.now();
+    fadeTimer = setInterval(() => {
+      const t = Math.min(1, (performance.now() - t0) / durationMs);
+      // ease-out cubic
+      const eased = 1 - Math.pow(1 - t, 3);
+      audio.volume = start + (target - start) * eased;
+      if (t >= 1) { clearInterval(fadeTimer); fadeTimer = null; }
+    }, 40);
+  }
+
+  function play() {
+    audio.play().then(() => {
+      isPlaying = true;
+      toggle.classList.add('playing');
+      fadeTo(TARGET_VOLUME, FADE_MS);
+      if (hint) hint.classList.add('show');
+      setTimeout(() => hint?.classList.remove('show'), 4200);
+    }).catch(() => { /* file missing or autoplay blocked */ });
+  }
+  function pause() {
+    fadeTo(0, 600);
+    setTimeout(() => {
+      audio.pause();
+      isPlaying = false;
+      toggle.classList.remove('playing');
+    }, 620);
+  }
 
   toggle.addEventListener('click', () => {
-    if (isPlaying) {
-      audio.pause();
-      toggle.classList.remove('playing');
-    } else {
-      audio.play().then(() => {
-        toggle.classList.add('playing');
-      }).catch(() => {
-        // 오디오 파일 없거나 재생 불가
-      });
-    }
-    isPlaying = !isPlaying;
+    userInteracted = true;
+    isPlaying ? pause() : play();
   });
+
+  // 첫 사용자 인터랙션(스크롤/터치)에서 자동 재생 시도
+  const triggerOnce = () => {
+    if (userInteracted) return;
+    userInteracted = true;
+    play();
+    document.removeEventListener('touchstart', triggerOnce);
+    document.removeEventListener('click', triggerOnce);
+    document.removeEventListener('wheel', triggerOnce);
+  };
+  document.addEventListener('touchstart', triggerOnce, { once: true, passive: true });
+  document.addEventListener('click', triggerOnce, { once: true });
+  document.addEventListener('wheel', triggerOnce, { once: true, passive: true });
 }
 
 /* ===================
